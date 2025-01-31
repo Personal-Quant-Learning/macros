@@ -1,5 +1,14 @@
 use anyhow::{anyhow, Result};
-use rust_macro::my_try;
+#[macro_export]
+macro_rules! my_try {
+    ($expr:expr) => {
+        match $expr {
+            Ok(val) => val,
+            Err(err) => return Err(err.into()),
+        }
+    };
+}
+
 fn main() -> Result<()> {
     // let ret = f3(f2(f1("hello")?)?)?;
     let ret = my_try!(f3(my_try!(f2(my_try!(f1("hello"))))));
